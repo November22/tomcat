@@ -1,0 +1,31 @@
+    1.tomcat基于java语言的轻量级应用服务器，是一款完全开源免费的Servlet容器实现。
+    2.alpha版本：指产品仍然需要完整的功能测试，而其功能亦未完善，但可以满足一般需求。
+    3.通过修改bin目录下的catalina.sh 或catalina.bat可以设置java虚拟机的参数
+        -示例：Set JAVA_OPTS = -server -Xms1024m -Xmx2048 -XX:PermSize=256m -XX:MaxPermSize=512m
+        PS：需要在第一行加入。
+
+    4.tomcat是在bin目录下的文件 setclasspath.bat 或setclasspath.sh文件中去寻找系统设置的全局变量 JAVA_HOME，
+或JRE_HOME。这里可以自己手动修改两个home的值。
+
+    5.tomcat的目录
+        a.bin 用于存放Tomcat启动、停止等批处理脚本和Shell脚本。
+        b.conf 用于存放Tomcat的相关配置文件
+            -Catalina 用于存放对于每个虚拟机的Context配置
+            -context.xml 用于定义所有web应用均需加载的Context配置，如果web应用指定了自己的context.xml，那么该文件
+        的配置将被覆盖。
+            -catalina.properties Tomcat的环境变量配置
+            -catalina.policy 当Tomcat在安全模式下运行时，此文件为默认的安全策略配置。
+            -logging.properties Tomcat日志配置文件，可以通过修改该文件修改Tomcat的日志级别以及日志路径等。
+            -server.xml Tomcat服务器的核心配置文件，用于配置tomcat的链接器、监听端口、处理请求的虚拟主机等。可以说
+        ，Tomcat主要根据该文件的配置信息创建服务器的实例。
+            -tomcat-users.xml 用于定义Tomcat默认用户及角色映射信息，Tomcat的Manager模块即用该文件中定义的
+        用户进行安全认证。
+            -web.xml Tomcat所有应用默认的部署文件，主要定义了基础Servlet和MIME映射。如果应用不包含web.xml，那么Tomcat将
+        使用此文件初始化部署描述，繁殖，tomcat会在启动时将默认部署描述和自定义配置进行合并。
+
+        c.lib Tomcat服务器依赖库目录，包含Tomcat服务器运行时环境依赖的jar包。
+        d.logs Tomcat默认的日志存放路径。
+        f.webapps Tomcat默认的web应用部署目录。
+        g.work  web应用JSP代码生成和编译临时目录。
+
+
