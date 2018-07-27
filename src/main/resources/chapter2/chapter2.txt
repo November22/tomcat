@@ -1,5 +1,24 @@
     主题：Tomcat总体设计
     一.总体设计
+        以下是一个Server不断打怪升级的过程。
         1.Server
             服务器可以描述为“它接收其他计算机（客户端）发来的请求数据并进行解析，完成相关业务处理，然后把处理结果
         作为相应返回给请求计算机（客户端）。
+            通常，我们使用[Socket监听服务器指定端口]来实现该功能。（问题Server如何区分多种协议）
+        2.Connector和Container
+            将[网络协议]与[请求处理]从概念上分开。
+            一个Server可以包含多个Connector和Container。其中Connector负责开启Socket并监听客户端请求。Container负责具体的请求处理。
+        Connector和Container分别拥有自己的start()和stop()方法来加载和释放自己维护的资源。（问题是多个Connector和Container怎么进行
+        匹配）。
+        3.Service
+            一个Server包含多个Service，一个Service负责维护【多个】Connector和【一个】Container，这样来自Connector的请求只能由它所属
+        的Service维护的Container处理。（Tomcat中Container通用的名称是Engine，用以表示整个Servlet引擎）
+            引擎只负责请求处理，并不需要考虑请求链接，协议等的处理。
+        4.Container设计
+            Connector和Container代表将网络协议和容器解耦。但是应用服务器是用来部署并运行Web应用的，而不是一个独立的业务处理系统。因此，
+        我们需要在Engine容器支持Web因公，当接收到Connector的处理请求时，Engine容器能够找到一个合适的Web应用来处理。
+            容器：在此处它代表了一类组件，这类组件的作用就是处理接收自客户端的请求，并且返回响应数据。尽管具体操作可能会委派到子组件完成，
+        但是从行为定义上，他们是一致的。
+            我们使用Container表示容器，Container可以添加并维护子容器，因此Engine，Host，Context，Wrapper均继承自Container。
+            既然Tomcat的Container可以表示不同的概念级别：【Servlet引擎，虚拟主机，Web应用和Servlet】，那么我们就可以将不同级别的容器作为
+        处理客户端请求的组件。
