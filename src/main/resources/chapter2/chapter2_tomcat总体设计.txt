@@ -22,3 +22,30 @@
             我们使用Container表示容器，Container可以添加并维护子容器，因此Engine，Host，Context，Wrapper均继承自Container。
             既然Tomcat的Container可以表示不同的概念级别：【Servlet引擎，虚拟主机，Web应用和Servlet】，那么我们就可以将不同级别的容器作为
         处理客户端请求的组件。
+
+    二.Lifecycle
+        1.所有的组件均存在启动，停止等生命周期方法，拥有生命周期管理的特性。我们针对所有拥有生命周期管理特性的组件抽象了一个Lifecycle
+    通用接口，该接口定义了生命周期管理的核心方法。
+            *init：初始化组件。
+            *start：启动组件。
+            *stop：停止组件。
+            *destroy：销毁组件。
+
+    三.Pipeline（管道）和Valve（阀门）
+        1.在增强组件的灵活性和可扩展性方面，职责链模式是一种比较好的选择。Tomcat使用该模式来实现客户端请求的处理。换句话说，在Tomcat
+    中每个Container组件通过执行一个职责链来完成具体的请求处理。
+        2.Tomcat定义Pipeline和Valve两个接口。前者用于构造职责链，后者代表职责链上的每个处理器。
+
+    四.Connector设计
+        1.要想与Container配合实现一个完整的服务器功能，Connector至少要完成如下几项功能：
+            *监听服务器端口，读取来自客户端的请求。
+            *将请求数据按照指定协议进行解析。
+            *根据请求地址匹配正确的容器进行处理。
+            *将响应返回客户端端。
+
+    五.Bootstrap（引导程序）和Catalina
+        1.tomcat通过类Catalina提供了一个shell程序，用于解析server.xml创建各个组件，同时负责启动，停止应用服务器。
+        2.tomcat提供了BootStrap作为应用服务器的启动入口。Bootstrap负责创建Catalina实例，根据执行参数【调用】Catalina相关方法完成
+    针对应用服务器的操作（启动，停止）。[这样的好处是实现了启动入口与核型环境的解耦]
+
+
