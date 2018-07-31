@@ -2,3 +2,25 @@
     一.什么是Catalina
         1.Catalina包含了前面所讲到的所有容器组件，以及后续章节将会涉及到的安全、会话、集群、部署、管理等Servlet
     容器架构等哥哥方面。【它通过松耦合的方式集成Coyote（提供链接通信），以完成按照请求协议进行数据的读写。】
+
+    二.Digester(Catalina使用Digester解析XML配置文件)
+        1.Digester的简介
+            a.Catalina使用Digester解析XML配置文件并创建应用服务器。
+            b.Tomcat在Catalina的创建过程中通过Digester结合【LifecycleListener】做了大量的初始化工作。
+            c.Digester是一款用于将XML转换为【Java对象】的事件驱动工具，是对SAX的高层次封装。
+            d.Digester的核心是【匹配规则】和【处理规则】
+            e.Digester是非线程安全的。
+            g.Digester提供了一套【对象栈机制】用于构造对象。
+
+        2.对象栈
+            a.Digester的对象栈（Digester同类名）主要在满足匹配模式的时候，由处理规则进行操作。Digester常见
+        栈操作如下：
+                i.clear:清空对象栈。
+                ii.peek:该操作有数个重载方法，可以实现【得到】位于栈顶部的对象或者从栈顶部数第n个对象，但是不会将
+            对象从栈中移除。
+                iii.pop:将位于栈顶部的对象移除并返回。
+                iv.push:将对象放入到栈顶部。
+            b.Digester的设计模式是指，在文件读取过程中，如果遇到一个XML节点的开始部分，则会触发处理规则事件创建
+        Java对象，并将其放入栈。当处理该节点的子节点的时候，该对象都将维护在栈中。当遇到该节点的结束部分时，该对
+        象将会从栈中取出并清除【并不是从内存中清除】。
+            c.Digester的匹配模式确定了何时触发处理操作，而处理规则定义了模式匹配时的具体操作。

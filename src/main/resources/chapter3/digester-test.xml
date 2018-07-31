@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<department name="d1" age="11">
+    <user name="name1" code="code1"/>
+    <user name="name2" code="code2"/>
+    <extension>
+        <property-name>key</property-name>
+        <property-value>value</property-value>
+    </extension>
+</department>
